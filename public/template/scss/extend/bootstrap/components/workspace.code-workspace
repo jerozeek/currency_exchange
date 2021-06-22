@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../.."
+		},
+		{
+			"path": "../../../../../../../dashlite-react/demo1"
+		}
+	],
+	"settings": {
+		"liveServer.settings.wait": 500,
+		"liveServer.settings.multiRootWorkspaceName": "dashlite"
+	}
+}
