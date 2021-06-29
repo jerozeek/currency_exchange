@@ -144,7 +144,6 @@ class TransferController extends ResourceController
                         //change transaction status to success
                         $this->transaction->updateTransactionStatus($transaction_id,'success');
 
-
                         //log the receivers details
                         $this->transaction->create([
                             'user_id'                       => $receiversInfo->id,

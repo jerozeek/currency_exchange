@@ -77,8 +77,8 @@ const in_app_charges = 0.2;
 const in_app_min = 2000;
 const in_app_max = 2000000;
 const exchangeCharges = 200;
-const APP_ID = '';
-const ONESIGNAL_API = '';
+const APP_ID = 'a88f3da0-8ac2-40e4-808c-4eb67e9e2cb5';
+const ONESIGNAL_API = 'NTMyZGJmMTUtMTUzYS00ZDUyLTkyZTUtZWZkYTYzZWRlZjU1';
 /*
  | --------------------------------------------------------------------------
  | Exit Status Codes

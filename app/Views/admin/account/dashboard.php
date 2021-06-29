@@ -1,6 +1,6 @@
 <?=$this->extend('admin/layout')?>
 <?=$this->section('main')?>
-<div class="nk-content ">
+<div class="nk-content">
     <div class="container-fluid">
         <div class="nk-content-inner">
             <div class="nk-content-body">

@@ -52,6 +52,7 @@ class Filters extends BaseConfig
 	 */
 	public $methods = [
         'post'  => ['throttle'],
+        'get'  => ['throttle']
     ];
 
 	/**

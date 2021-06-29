@@ -16,7 +16,7 @@ class WalletModel extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-	    'user_id','dollar','euro','pounds','naira','created_at','updated_at','deleted_at'
+	    'user_id','dollar','euro','pound','naira','created_at','updated_at','deleted_at'
     ];
 
 	// Dates
@@ -62,7 +62,7 @@ class WalletModel extends Model
 
         if ($currency == 'gbp')
         {
-            $c = 'pounds';
+            $c = 'pound';
         }
 
         $this->set("$c","$c+$amount",false)->where(['user_id' => $user_id])->update();
@@ -78,8 +78,14 @@ class WalletModel extends Model
         return $this->set("$wallet","$wallet-$amount",false)->where(['user_id' => $id])->update();
     }
 
-    public function fundWallet($id,$wallet,$amount):bool
+    public function fundWallet($id,$wallet,$amount)
     {
-        return $this->set("$wallet","$wallet+$amount",false)->where(['user_id' => $id])->update();
+        $walletInfo = $this->where(['user_id' => $id])->get()->getRow();
+        if ($walletInfo)
+        {
+            $walletDetails = $this->find($walletInfo->id);
+            $walletDetails->$wallet = $walletDetails->$wallet + $amount;
+            $this->save($walletDetails);
+        }
     }
 }

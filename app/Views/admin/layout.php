@@ -52,21 +52,21 @@
                             </li><!-- .nk-menu-item -->
 
                             <li class="nk-menu-item">
-                                <a href="<?=base_url('admin/funds/deposit')?>" class="nk-menu-link">
+                                <a href="<?=base_url('admin/transactions/transactions?type=deposit')?>" class="nk-menu-link">
                                     <span class="nk-menu-icon"><em class="icon ni ni-money"></em></span>
                                     <span class="nk-menu-text">Deposits</span>
                                 </a>
                             </li><!-- .nk-menu-item -->
 
                             <li class="nk-menu-item">
-                                <a href="<?=base_url('admin/withdrawal/manage')?>" class="nk-menu-link">
+                                <a href="<?=base_url('admin/transactions/transactions?type=transfer')?>" class="nk-menu-link">
                                     <span class="nk-menu-icon"><em class="icon ni ni-bag-fill"></em></span>
                                     <span class="nk-menu-text">Withdrawals</span>
                                 </a>
                             </li><!-- .nk-menu-item -->
 
                             <li class="nk-menu-item">
-                                <a href="<?=base_url('admin/funds/exchanges')?>" class="nk-menu-link">
+                                <a href="<?=base_url('admin/transactions/transactions?type=exchange')?>" class="nk-menu-link">
                                     <span class="nk-menu-icon"><em class="icon ni ni-exchange-v"></em></span>
                                     <span class="nk-menu-text">Exchanges</span>
                                 </a>
@@ -79,10 +79,10 @@
                                 </a>
                                 <ul class="nk-menu-sub">
                                     <li class="nk-menu-item">
-                                        <a href="<?=base_url('admin/kyc/manage/deposit')?>" class="nk-menu-link"><span class="nk-menu-text">Pending KYC</span></a>
+                                        <a href="<?=base_url('admin/kyc/kyc?status=pending')?>" class="nk-menu-link"><span class="nk-menu-text">Pending KYC</span></a>
                                     </li>
                                     <li class="nk-menu-item">
-                                        <a href="<?=base_url('admin/kyc/manage/approved')?>" class="nk-menu-link"><span class="nk-menu-text">Approved KYC</span></a>
+                                        <a href="<?=base_url('admin/kyc/kyc?status=approved')?>" class="nk-menu-link"><span class="nk-menu-text">Approved KYC</span></a>
                                     </li>
                                 </ul><!-- .nk-menu-sub -->
                             </li><!-- .nk-menu-item -->
@@ -218,6 +218,88 @@
 <script src="<?=base_url('public/template/assets/js/bundle.js?ver=2.4.0')?>"></script>
 <script src="<?=base_url('public/template/assets/js/scripts.js?ver=2.4.0')?>"></script>
 <script src="<?=base_url('public/template/assets/js/charts/gd-default.js?ver=2.4.0')?>"></script>
+
+<script>
+    function HandleKYC(id,status)
+    {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, execute action!'
+        }).then(function (result) {
+            if (result.value) {
+
+                $(document).load('<?=base_url('admin/kyc/action?id=')?>'+id+'&status='+status, function (d,s){
+                    if (s)
+                    {
+                        if (d === 'declined')
+                        {
+                            Swal.fire('Success!', 'KYC declined successfully', 'success');
+                            setTimeout(function ()
+                            {
+                                location.reload();
+                            },3000);
+                        }
+
+                        else if (d === 'approved')
+                        {
+                            Swal.fire('Success!', 'KYC approved successfully', 'success');
+                            setTimeout(function ()
+                            {
+                                location.reload();
+                            },3000);
+                        }
+                        else
+                        {
+                            Swal.fire('Opps!', 'Something went wrong', 'error');
+                        }
+                    }
+                    else
+                    {
+                        Swal.fire('Opps!', 'Something went wrong', 'error');
+                    }
+                })
+            }
+        });
+    }
+
+    function SuspendUser(id,status)
+    {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, i want!'
+        }).then(function (result) {
+            if (result.value)
+            {
+                $(document).load('<?=base_url('admin/users/suspend?user_id=')?>'+id+'&status='+status, function (d,s) {
+                    if (s)
+                    {
+                        if (d === 'success')
+                        {
+                            Swal.fire('Success','Action done successfully','success');
+                            setTimeout(function () {
+                                location.reload();
+                            },3000);
+                        }
+                        else
+                        {
+                            Swal.fire('Error','Something went wrong','error');
+                        }
+                    }
+                    else
+                    {
+                        Swal.fire('Error','Something went wrong','error');
+                    }
+                });
+            }
+        });
+    }
+</script>
 </body>
 
 </html>

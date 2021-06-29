@@ -81,5 +81,4 @@ class NotificationsModel extends Model
         $oneSignal->send();
     }
 
-    //center area yawuza
 }

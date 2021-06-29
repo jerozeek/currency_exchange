@@ -126,7 +126,7 @@ class PaystackController extends ResourceController
                 return $this->fail('Minimum transfer amount is '. min_transfer);
             }
 
-            if ($amount >max_transfer)
+            if ($amount > max_transfer)
             {
                 return $this->fail('Maximum transfer amount is '. max_transfer);
             }

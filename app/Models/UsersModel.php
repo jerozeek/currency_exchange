@@ -263,8 +263,8 @@ class UsersModel extends Model
 
     public function setPlayerID($player_id,$user_id)
     {
-        $user = $this->find($user_id);
-        $user->player_id = $player_id;
+        $user               = $this->find($user_id);
+        $user->player_id    = $player_id;
         $this->save($user);
     }
 }

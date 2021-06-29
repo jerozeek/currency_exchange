@@ -2,22 +2,21 @@
 
 namespace App\Models;
 
-use App\Entities\KycEntity;
+use App\Entities\PermissionsEntity;
 use CodeIgniter\Model;
 
-class KycModel extends Model
+class PermissionsModel extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'kyc';
+	protected $table                = 'permissions';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
-	protected $returnType           = KycEntity::class;
-	protected $useSoftDeletes       = true;
+	protected $returnType           = PermissionsEntity::class;
+	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-	    'user_id','first_name','middle_name','last_name','phone','date_of_birth','address','city','state',
-        'country','id_number','id_upload','approved','created_at','updated_at','deleted_at','id_type',
+	    'user_id','transactions','users','kyc','settings','permissions','created_at','updated_at','deleted_at'
     ];
 
 	// Dates
@@ -44,31 +43,36 @@ class KycModel extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-    public function create(array $data)
+    /**
+     * @throws \ReflectionException
+     */
+    public function assignPermissions(array $data):int
     {
-        $user = $this->where(['user_id' => $data['user_id']])->get()->getRow();
-        if ($user)
+        return $this->save($data);
+    }
+
+    public function hasPermission($permission,$key,$user_id):bool
+    {
+        $handler = $this->where(['user_id' => $user_id])->get()->getRow();
+        if ($handler)
         {
-            return null;
+            return self::splitJson($handler->$permission,$key);
+        }
+        return false;
+    }
+
+    public function splitJson($json,$key):bool
+    {
+        $data = json_decode($json,true);
+
+        foreach ($data as $datum)
+        {
+            if ($datum[$key] == 1)
+            {
+                return true;
+            }
         }
 
-        return $this->insert($data);
-    }
-
-    public function getInfo($id)
-    {
-        return $this->where(['user_id' => $id])->get()->getRow();
-    }
-
-    public function loadAll(): array
-    {
-        return $this->findAll();
-    }
-
-    public function changeState(int $user_id, string $status)
-    {
-        $kyc = $this->find($user_id);
-        $kyc->status = $status;
-        $this->save($kyc);
+        return false;
     }
 }

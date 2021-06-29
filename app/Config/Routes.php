@@ -50,6 +50,7 @@ $routes->group('api/deposit',['namespace' => 'App\Controllers\Deposit'], functio
     $routes->get('supported_currency','StripeController::supportedCurrency');
     $routes->post('create_intent','StripeController::createPaymentIntent');
     $routes->get('complete_deposit','StripeController::stripePay');
+    $routes->get('tester','StripeController::test');
 });
 
 $routes->group('api/transfer',['namespace' => 'App\Controllers\Withdraw'], function ($routes){
@@ -99,6 +100,23 @@ $routes->group('admin/auth', ['namespace' => 'App\Controllers\Admin\Auth'],funct
 //Admin grouping
 $routes->group('admin/account', ['namespace' => 'App\Controllers\Admin\Account'],function ($routes){
     $routes->get('dashboard','AdminController::dashboard',['as' => 'dashboard']);
+});
+
+$routes->group('admin/kyc', ['namespace' => 'App\Controllers\Admin\Account'],function ($routes){
+    $routes->get('kyc','KYController::index',['as' => 'kyc']);
+    $routes->get('view/(:segment)','KYController::details/$1');
+    $routes->get('action','KYController::handleRequest');
+});
+
+$routes->group('admin/users', ['namespace' => 'App\Controllers\Admin\Account'],function ($routes){
+    $routes->get('manage','UserController::index');
+    $routes->get('details/(:segment)','UserController::userDetails/$1');
+    $routes->get('suspend','UserController::manageStatus');
+});
+
+$routes->group('admin/transactions', ['namespace' => 'App\Controllers\Admin\Account'],function ($routes){
+    $routes->get('transactions','TransactionsController::transactions');
+    $routes->get('details/(:segment)','TransactionsController::transactionInvoice/$1');
 });
 
 

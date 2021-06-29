@@ -11,6 +11,7 @@ use App\Log\TransactionLogger;
 use App\Middleware\Auth;
 use App\Models\TransactionsModel;
 use App\Models\UsersModel;
+use App\Models\WalletModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -22,13 +23,15 @@ class StripeController extends ResourceController
     private UsersModel $userModel;
     private TransactionsModel $transaction;
     protected $stripe;
+    private WalletModel $wallet;
 
     public function __construct()
     {
         $this->auth         = new Auth();
         $this->userModel    = new UsersModel();
-        $this->transaction = new TransactionsModel();
+        $this->transaction  = new TransactionsModel();
         $this->stripe       = new Stripe();
+        $this->wallet       = new WalletModel();
         // This is your real test secret API key.
         \Stripe\Stripe::setApiKey(stripeSecretKey);
     }
@@ -155,8 +158,11 @@ class StripeController extends ResourceController
 
             if ($paymentIntent)
             {
+
                 $allowed = $this->transaction->all_allowed_intent();
+
                 if (count($allowed) > 0) {
+
                     if (in_array($paymentIntent, $allowed))
                     {
                         $intent = \Stripe\PaymentIntent::retrieve($paymentIntent);
@@ -167,6 +173,7 @@ class StripeController extends ResourceController
 
                             if ($intent->status)
                             {
+
                                 foreach ($intent->charges->data as $data)
                                 {
                                     $balance_transaction        = $data['balance_transaction'];
@@ -179,10 +186,11 @@ class StripeController extends ResourceController
                                     $id                         = $data['id'];
                                 }
                                 //payment was successful.
+                                $amount = ($intent->amount_received / 100);
                                 $this->transaction->updateTransaction([
                                     'id'                => $paymentData->id,
                                     'user_id'           => $paymentData->user_id,
-                                    'amount'            => ($intent->amount_received / 100),
+                                    'amount'            => $amount,
                                     'reference'         => $balance_transaction,
                                     'card_type'         => $card_type,
                                     'card_number'       => $card_number,
@@ -203,7 +211,8 @@ class StripeController extends ResourceController
                                         ]
                                     ]);
                                 }
-                                else {
+                                else
+                                {
                                     return $this->fail($error);
                                 }
                             }

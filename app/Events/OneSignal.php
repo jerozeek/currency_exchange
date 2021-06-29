@@ -29,7 +29,6 @@ class OneSignal
 
     public function send()
     {
-
         $body = [
             'app_id'                => $this->app_id,
             'include_player_ids'    => $this->player_id,

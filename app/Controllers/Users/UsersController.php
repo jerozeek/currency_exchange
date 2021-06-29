@@ -26,9 +26,9 @@ class UsersController extends ResourceController
 
     public function __construct()
     {
-        $this->auth         = new Auth();
-        $this->userModel    = new UsersModel();
-        $this->kycModel     = new KycModel();
+        $this->auth             = new Auth();
+        $this->userModel        = new UsersModel();
+        $this->kycModel         = new KycModel();
         helper(['validation_helper']);
     }
 
@@ -206,7 +206,23 @@ class UsersController extends ResourceController
             {
                 return $this->respond([
                     'status'    => true,
-                    'message'   => $details
+                    'message'   => 'KYC found',
+                    'data'      => [
+                        'first_name'        => $details->first_name,
+                        'middle_name'       => $details->middle_name,
+                        'last_name'         => $details->last_name,
+                        'phone'             => $details->phone,
+                        'date_of_birth'     => $details->date_of_birth,
+                        'address'           => $details->address,
+                        'city'              => $details->city,
+                        'state'             => $details->state,
+                        'country'           => $details->country,
+                        'id_type'           => $details->id_type,
+                        'id_number'         => $details->id_number,
+                        'id_upload'         => base_url("public/kyc/$details->id_upload"),
+                        'approved'          => $details->approved,
+                        'created_at'        => date('d M Y', strtotime($details->created_at))
+                    ]
                 ]);
             }
 
