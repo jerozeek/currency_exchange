@@ -31,7 +31,7 @@ class OneSignal
     {
         $body = [
             'app_id'                => $this->app_id,
-            'include_player_ids'    => $this->player_id,
+            'include_player_ids'    => [$this->player_id],
             'data'                  => $this->data,
             'contents'              => $this->content
         ];
@@ -47,10 +47,7 @@ class OneSignal
 
         $formatted['allresponses'] =  json_decode($response->getBody(),true);
 
-        $return = json_encode($formatted);
-
-
-        return true;
+        return json_encode($formatted);
 
     }
 

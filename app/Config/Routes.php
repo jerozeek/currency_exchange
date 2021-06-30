@@ -50,7 +50,6 @@ $routes->group('api/deposit',['namespace' => 'App\Controllers\Deposit'], functio
     $routes->get('supported_currency','StripeController::supportedCurrency');
     $routes->post('create_intent','StripeController::createPaymentIntent');
     $routes->get('complete_deposit','StripeController::stripePay');
-    $routes->get('tester','StripeController::test');
 });
 
 $routes->group('api/transfer',['namespace' => 'App\Controllers\Withdraw'], function ($routes){
@@ -58,6 +57,8 @@ $routes->group('api/transfer',['namespace' => 'App\Controllers\Withdraw'], funct
     $routes->get('supported_banks','PaystackController::bankList');
     $routes->get('verify_account','PaystackController::validateAccount');
     $routes->post('invoke','PaystackController::makeTransfer');
+
+    //$routes->get('push','TransferController::testPushNotification');
 
     //in app transfer
     $routes->get('users','TransferController::getAllUsers');

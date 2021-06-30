@@ -136,6 +136,7 @@ class TransferController extends ResourceController
 
                     //fund customer
                     $receiversInfo      = $this->userModel->where(['email' => $email])->get()->getRow();
+
                     if ($receiversInfo)
                     {
                         //fund receiver
@@ -157,6 +158,7 @@ class TransferController extends ResourceController
                             'gateway'                       => 'in_app',
                             'status'                        => 'success',
                             'sender_name'                   => $this->auth->Users->first_name . ' '. $this->auth->Users->last_name,
+                            'trans_date'                    => date('Y-m-d'),
                             'created_at'                    => date('Y-m-d H:i:s')
                         ]);
 
@@ -183,5 +185,6 @@ class TransferController extends ResourceController
 
         return $this->failUnauthorized();
     }
+
 
 }
