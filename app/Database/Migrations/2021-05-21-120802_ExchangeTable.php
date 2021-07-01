@@ -20,6 +20,12 @@ class ExchangeTable extends Migration
                 'default'    => 0
             ],
 
+            'converted_amount'       => [
+                'type'       => 'int',
+                'constraint' => 10,
+                'default'    => 0
+            ],
+
             'charges'        => [
                 'type'       => 'int',
                 'constraint' => 10,

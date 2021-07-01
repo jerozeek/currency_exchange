@@ -120,7 +120,7 @@ class StripeController extends ResourceController
                             'email'             => $email,
                             'amount'            => (calculateOrderAmount($json_obj->items) / 100),
                             'payment_method'    => 'card',
-                            'currency'          => getCurrency($json_obj->items),
+                            'currency'          => strtoupper(getCurrency($json_obj->items)),
                             'ip_address'        => $this->request->getIPAddress(),
                             'country'           => ip_info($this->request->getIPAddress())['country'],
                             'intent_id'         => $paymentIntent->id,

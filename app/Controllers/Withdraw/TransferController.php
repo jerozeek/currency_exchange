@@ -78,6 +78,26 @@ class TransferController extends ResourceController
             $allUsers   = $this->userModel->findAll();
             $allowed[]  = [];
 
+            if ($wallet == 'naira')
+            {
+                $currency = 'NGN';
+            }
+
+            if ($wallet == 'dollar')
+            {
+                $currency = 'USD';
+            }
+
+            if ($wallet == 'euro')
+            {
+                $currency = 'EUR';
+            }
+
+            if ($wallet == 'pound')
+            {
+                $currency = 'GBP';
+            }
+
             foreach ($allUsers as $user)
             {
                 $allowed[]  = $user->email;
@@ -111,13 +131,19 @@ class TransferController extends ResourceController
                     return $this->fail('You have reached your daily transfer limit');
                 }
 
+                //dont send move to same account
+                if ($this->auth->Users->email == $email)
+                {
+                    return $this->fail('Action not allowed');
+                }
+
                 //log the transaction
                 $transaction_id = $this->transaction->create([
                     'user_id'                       => $this->auth->Users->id,
                     'amount'                        => $amount,
                     'charges'                       => $charges,
                     'email'                         => $this->auth->Users->email,
-                    'currency'                      => 'NGN',
+                    'currency'                      => $currency,
                     'ip_address'                    => $this->request->getIPAddress(),
                     'transaction_type'              => 'transfer',
                     'transaction'                   => 'in_app',
@@ -150,7 +176,7 @@ class TransferController extends ResourceController
                             'user_id'                       => $receiversInfo->id,
                             'amount'                        => $amount,
                             'charges'                       => 0,
-                            'currency'                      => 'NGN',
+                            'currency'                      => $currency,
                             'ip_address'                    => $this->request->getIPAddress(),
                             'transaction_type'              => 'deposit',
                             'transaction'                   => 'in_app',
@@ -162,7 +188,7 @@ class TransferController extends ResourceController
                             'created_at'                    => date('Y-m-d H:i:s')
                         ]);
 
-                        $message = 'Your '.$wallet.' wallet account have been created with the sum of '. $amount. ' by '. $this->auth->Users->first_name. ' '. $this->auth->Users->first_name;
+                        $message = 'Your '.$wallet.' wallet account have been credited with the sum of '. number_format($amount). ' by '. $this->auth->Users->first_name. ' '. $this->auth->Users->last_name;
                         //send a direct notification to user
                         $this->notify->setMessage($receiversInfo->player_id,$receiversInfo->id,$message);
 

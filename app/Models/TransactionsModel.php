@@ -105,7 +105,7 @@ class TransactionsModel extends Model
 
     public function fetchTransactions($user_id):array
     {
-        return $this->where(['user_id' => $user_id, 'status' => 'success','transaction_type !=' => 'exchange'])->get()->getResult();
+        return $this->where(['user_id' => $user_id, 'status' => 'success','transaction_type !=' => 'exchange'])->orderBy('id','DESC')->get()->getResult();
     }
 
     public function todayWithdrawalTotal($id):int

@@ -16,7 +16,7 @@ class ExchangeModel extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-	    'user_id','amount','charges','from','to','created_at','updated_at','deleted_at'
+	    'user_id','amount','charges','from','to','converted_amount','created_at','updated_at','deleted_at'
     ];
 
 	// Dates

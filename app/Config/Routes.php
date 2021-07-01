@@ -66,6 +66,7 @@ $routes->group('api/transfer',['namespace' => 'App\Controllers\Withdraw'], funct
 });
 $routes->group('api/exchange', ['namespace' => 'App\Controllers\Exchange'], function ($routes){
     $routes->post('convertCurrency','FixerController::currencyExchange');
+    $routes->get('getExchange','FixerController::getExchange');
 });
 
 $routes->group('api/transactions', ['namespace' => 'App\Controllers\Users'], function ($routes){

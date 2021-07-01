@@ -51,7 +51,7 @@ class NotificationsModel extends Model
 
     public function getMessage($user_id):array
     {
-        return $this->where(['user_id' => $user_id])->get()->getResult();
+        return $this->where(['user_id' => $user_id])->orderBy('id','DESC')->get()->getResult();
     }
 
     public function setMessage($player_id = null, int $user_id = 0, string $message = null)

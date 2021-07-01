@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controllers\Exchange;
-
 
 use App\Middleware\Auth;
 use App\Models\ExchangeModel;
@@ -38,6 +36,7 @@ class FixerController extends ResourceController
         if ($this->auth->check())
         {
             $data = (new Token())->getJsonData();
+
             if (!array_key_exists('from',$data))
             {
                 return $this->fail('Please select currency from');
@@ -88,12 +87,12 @@ class FixerController extends ResourceController
                    'charges'            => $charges,
                    'from'               => $from,
                    'to'                 => $to,
-                   'transaction_type'   => 'exchange',
+                   'converted_amount'   => $convertedAmount,
                    'created_at'         => date('Y-m-d H:i:s')
                 ]);
 
                 //send a notification
-                $message = 'Your exchange from:'. $from. 'currency to:'.$to. 'currency was successful';
+                $message = 'Your exchange from: '.$from.' currency to: '.$to.' currency was successful';
                 $this->notifier->setMessage($this->auth->Users->player_id,$this->auth->Users->id,$message);
 
                 return $this->respond([
@@ -127,6 +126,45 @@ class FixerController extends ResourceController
         }
 
         return null;
+    }
+
+    public function getExchange()
+    {
+        if ($this->auth->check())
+        {
+            $exchanges = $this->exchangeModel->where(['user_id' => $this->auth->Users->id])->orderBy('id','DESC')->get()->getResult();
+            if (count($exchanges) > 0)
+            {
+                return $this->respond([
+                    'status'    => true,
+                    'message'   => 'Exchange found',
+                    'data'      => $this->exchangeList($exchanges)
+                ]);
+            }
+
+            return $this->failNotFound();
+        }
+
+        return $this->failUnauthorized();
+    }
+
+    private function exchangeList(array $exchanges):array
+    {
+        $output = [];
+
+        foreach ($exchanges as $exchange)
+        {
+            $output[] = [
+                'amount'        => $exchange->amount,
+                'from'          => $exchange->from,
+                'to'            => $exchange->to,
+                'charges'       => $exchange->charges,
+                'converted_to'  => $exchange->converted_amount,
+                'date'          => date('d M, Y', strtotime($exchange->created_at)),
+            ];
+        }
+
+        return $output;
     }
 
 }
