@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controllers\Deposit;
-
 
 use App\Config\RestConfig;
 use App\Libraries\Stripe;
@@ -62,13 +60,13 @@ class StripeController extends ResourceController
 
             try {
                 // retrieve JSON from POST body
-                $json_str = file_get_contents('php://input');
-                $json_obj = json_decode($json_str);
-
-                $customer_id = null;
+                $json_str       = file_get_contents('php://input');
+                $json_obj       = json_decode($json_str);
+                $customer_id    = null;
 
                 //Manage Customer
-                if ($customer_id == NULL) {
+                if ($customer_id == NULL)
+                {
                     $customer = \Stripe\Customer::create([
                         'email' => $email,
                         'metadata' => [
@@ -78,7 +76,9 @@ class StripeController extends ResourceController
                         ],
                     ]);
                     $customer_id = $customer->id;
-                } else {
+                }
+                else
+                {
                     $customer = \Stripe\Customer::update(
                         $customer_id,
                         [
@@ -92,7 +92,8 @@ class StripeController extends ResourceController
                     );
                 }
 
-                if ($customer_id) {
+                if ($customer_id)
+                {
                     //Create the payment Intent
                     $metadata = [
                         "first_name"    => $first_name,

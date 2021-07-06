@@ -103,9 +103,29 @@ class TransactionsModel extends Model
         $this->save($transaction);
     }
 
-    public function fetchTransactions($user_id):array
+    public function fetchTransactions($user_id)
     {
-        return $this->where(['user_id' => $user_id, 'status' => 'success','transaction_type !=' => 'exchange'])->orderBy('id','DESC')->get()->getResult();
+        helper(['signHelper_helper']);
+        $transactions   = $this->where(['user_id' => $user_id, 'status' => 'success','transaction_type !=' => 'exchange'])->orderBy('id','DESC')->get()->getResult();
+        $output         = [];
+
+        if (count($transactions) > 0)
+        {
+            foreach ($transactions as $transaction)
+            {
+                $output[] = [
+                    'amount'                => round($transaction->amount,2),
+                    'sign'                  => $transaction->currency,
+                    'currency'              => signHelper($transaction->currency),
+                    'transaction_type'      => ucfirst($transaction->transaction_type),
+                    'created_at'            => date('d M Y',strtotime($transaction->created_at)),
+                ];
+            }
+
+            return $output;
+        }
+
+        return null;
     }
 
     public function todayWithdrawalTotal($id):int

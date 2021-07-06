@@ -21,15 +21,11 @@ class TransactionsTable extends Migration
             ],
 
             'amount'       => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'charges'       => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'currency'       => [

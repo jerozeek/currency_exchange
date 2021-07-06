@@ -87,6 +87,11 @@ class UsersController extends ResourceController
         {
             $data = (new Token())->getJsonData();
 
+            if (!array_key_exists('current_password',$data))
+            {
+                return $this->fail('Current Password is required');
+            }
+
             if (!array_key_exists('password',$data))
             {
                 return $this->fail('Password is required');
@@ -95,6 +100,12 @@ class UsersController extends ResourceController
             if (!array_key_exists('confirm_password',$data))
             {
                 return $this->fail('Confirm password is required');
+            }
+
+            //compare old password
+            if (!password_verify($data['current_password'],$this->auth->Users->password))
+            {
+                return $this->fail('Current password is incorrect');
             }
 
             if (Validate_Password($data['password']))
@@ -111,8 +122,10 @@ class UsersController extends ResourceController
 
                     return $this->fail('Something went wrong');
                 }
+
                 return $this->fail('Password does not match');
             }
+
             return $this->fail('Password must be up to 6 character');
         }
 

@@ -74,6 +74,12 @@ class FixerController extends ResourceController
 
             if ($convertedAmount)
             {
+
+                if (!($convertedAmount  >= 1))
+                {
+                    return $this->fail('Conversion cannot be done. Please choose a higher amount');
+                }
+
                 //debit the from wallet
                 $this->wallet->debitWallet($this->auth->Users->id,$data['from'],$amount);
 
@@ -155,11 +161,11 @@ class FixerController extends ResourceController
         foreach ($exchanges as $exchange)
         {
             $output[] = [
-                'amount'        => $exchange->amount,
+                'amount'        => round($exchange->amount,2),
                 'from'          => $exchange->from,
                 'to'            => $exchange->to,
-                'charges'       => $exchange->charges,
-                'converted_to'  => $exchange->converted_amount,
+                'charges'       => round($exchange->charges,2),
+                'converted_to'  => round($exchange->converted_amount,2),
                 'date'          => date('d M, Y', strtotime($exchange->created_at)),
             ];
         }

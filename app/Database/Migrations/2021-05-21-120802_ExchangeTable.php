@@ -15,21 +15,15 @@ class ExchangeTable extends Migration
             ],
 
             'amount'       => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'converted_amount'       => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'charges'        => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'from'        => [
@@ -53,10 +47,12 @@ class ExchangeTable extends Migration
                 'type' => 'datetime',
                 'null' => true,
             ],
+
             'deleted_at' => [
                 'type' => 'datetime',
                 'null' => true,
             ],
+
         ];
         $this->forge->addField('id');
         $this->forge->addField($fields);

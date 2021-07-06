@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controllers\Auth;
-
 
 use App\Events\Notifications;
 use App\Middleware\Auth;
@@ -10,7 +8,6 @@ use App\Models\TransactionsModel;
 use App\Models\UsersModel;
 use App\Models\WalletModel;
 use CodeIgniter\API\ResponseTrait;
-use CodeIgniter\Model;
 use CodeIgniter\RESTful\ResourceController;
 
 class FirewallController extends ResourceController
@@ -33,7 +30,6 @@ class FirewallController extends ResourceController
         {
 
             $this->checkWallet($this->auth->Users->id);
-
 
             if ($this->auth->Users->status == 'not_activated')
             {
@@ -58,7 +54,7 @@ class FirewallController extends ResourceController
             if ($this->auth->Users->status == 'active')
             {
                 $wallet = new WalletModel();
-                $info = $wallet->where('user_id',$this->auth->Users->id)->get()->getRow();
+                $info   = $wallet->where('user_id',$this->auth->Users->id)->get()->getRow();
 
                 return $this->respond([
                     'status'    => true,
@@ -73,28 +69,28 @@ class FirewallController extends ResourceController
                             'naira'         => [
                                 'sign'      => 'NGN',
                                 'currency'  => 'naira',
-                                'balance'   => $info->naira,
+                                'balance'   => round($info->naira,2),
                                 'symbol'    => '₦'
                             ],
 
                             'dollar'        => [
                                 'sign'      => 'USD',
                                 'currency'  => 'dollar',
-                                'balance'   => $info->dollar,
+                                'balance'   => round($info->dollar,2),
                                 'symbol'    => '$',
                             ],
 
                             'euro'          => [
                                 'sign'      => 'EUR',
                                 'currency'  => 'euro',
-                                'balance'   => $info->euro,
+                                'balance'   => round($info->euro,2),
                                 'symbol'    => '€',
                             ],
 
                             'pound'         => [
                                 'sign'      => 'GBP',
                                 'currency'  => 'pound',
-                                'balance'   => $info->pound,
+                                'balance'   => round($info->pound,2),
                                 'symbol'    => '£'
                             ],
                         ],
@@ -117,7 +113,6 @@ class FirewallController extends ResourceController
         $transactionsModel = new TransactionsModel();
         return $transactionsModel->fetchTransactions($user_id);
     }
-
 
     private function checkWallet($id)
     {

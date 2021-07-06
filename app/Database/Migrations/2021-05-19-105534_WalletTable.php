@@ -15,27 +15,19 @@ class WalletTable extends Migration
             ],
 
             'dollar'       => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'euro'        => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'pound'        => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'naira'        => [
-                'type'       => 'int',
-                'constraint' => 10,
-                'default'    => 0
+                'type'       => 'double',
             ],
 
             'created_at' => [
