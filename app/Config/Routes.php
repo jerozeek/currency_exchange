@@ -87,8 +87,11 @@ $routes->group('api/notification', ['namespace' => 'App\Controllers\Notification
 });
 
 $routes->group('api/p2p', ['namespace' => 'App\Controllers\P2p'], function ($routes){
-    $routes->get('getBuyers','P2pController::loadBuyers');
-    $routes->get('getSellers','P2pController::loadSellers');
+
+    $routes->post('seller/create/sales','P2pController::saleRequest');
+    $routes->get('seller/listing/sales','P2pController::saleList');
+
+    $routes->get('sales/pending/listing','P2pController::salesListing');
 });
 
 

@@ -88,4 +88,5 @@ class WalletModel extends Model
             $this->save($walletDetails);
         }
     }
+
 }

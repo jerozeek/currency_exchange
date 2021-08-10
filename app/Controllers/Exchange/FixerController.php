@@ -154,7 +154,7 @@ class FixerController extends ResourceController
         return $this->failUnauthorized();
     }
 
-    private function exchangeList(array $exchanges):array
+    private function exchangeList(array $exchanges)
     {
         $output = [];
 

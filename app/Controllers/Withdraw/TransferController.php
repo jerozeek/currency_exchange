@@ -49,7 +49,7 @@ class TransferController extends ResourceController
                         'first_name'        => $user->first_name,
                         'last_name'         => $user->last_name,
                         'email'             => $user->email,
-                        'profile'           => $user->profile_image == null ? null : base_url("public/images/$user->profile_image")
+                        'profile'           => $user->profile_image == null ? null : base_url("public/profile/$user->profile_image")
                     ];
                 }
 
