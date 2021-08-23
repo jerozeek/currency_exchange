@@ -90,8 +90,17 @@ $routes->group('api/p2p', ['namespace' => 'App\Controllers\P2p'], function ($rou
 
     $routes->post('seller/create/sales','P2pController::saleRequest');
     $routes->get('seller/listing/sales','P2pController::saleList');
+    $routes->get('listing/pending/sales','P2pController::getAllP2pList');
+    $routes->get('order/sales/request','P2pController::getSalesOrder');
+    $routes->get('order/sales/response/(:any)','P2pController::orderResponse/$1');
+    $routes->get('order/sales/cancel/(:any)','P2pController::cancelOrder/$1');
+    $routes->get('order/sales/confirmPayment/(:any)','P2pController::confirmPaymentFromBuyer/$1');
 
-    $routes->get('sales/pending/listing','P2pController::salesListing');
+    //buyer makes a request to buy
+    $routes->post('buyer/request/buy','P2pController::requestToBuy');
+    $routes->get('buyer/request/order','P2pController::buyOrderList');
+    $routes->post('buyer/order/confirmPayment','P2pController::confirmPaymentToSeller');
+
 });
 
 

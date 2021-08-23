@@ -13,7 +13,7 @@ class P2pModel extends Model
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = P2pEntity::class;
-	protected $useSoftDeletes       = false;
+	protected $useSoftDeletes       = true;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 	    'user_id','min_amount','max_amount','currency_from','currency_to','exchange_rate','account_name',
@@ -52,5 +52,43 @@ class P2pModel extends Model
     public function getOrderList(?int $id):array
     {
         return $this->where(['user_id' => $id])->orderBy('id','DESC')->get()->getResult();
+    }
+
+    public function getAllList():array
+    {
+        return $this->where(['status' => 'open'])->get()->getResult();
+    }
+
+    public function getDetails($id)
+    {
+        return $this->where(['id' => $id, 'status' => 'open'])->get()->getRow();
+    }
+    public function getBankDetails($p_id)
+    {
+        return $this->find($p_id);
+    }
+
+    public function closeP2p($id):bool
+    {
+        return $this->update($id,['status' => 'close']);
+    }
+
+    public function handPartPurchase($p_id, $remainingBalance):bool
+    {
+        $info = $this->find($p_id);
+
+        if ($remainingBalance > $info->min_amount)
+        {
+            $min_amount = $remainingBalance;
+        }
+        else
+        {
+            $min_amount = $info->min_amount;
+        }
+
+        return $this->update($p_id,[
+            'max_amount'    => $remainingBalance,
+            'min_amount'    => $min_amount
+        ]);
     }
 }

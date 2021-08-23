@@ -29,6 +29,10 @@ class P2pTransactionsTable extends Migration
                 'type'       => 'double',
             ],
 
+            'exchange_amount'        => [
+                'type'       => 'double',
+            ],
+
             'charges'        => [
                 'type'       => 'double',
             ],

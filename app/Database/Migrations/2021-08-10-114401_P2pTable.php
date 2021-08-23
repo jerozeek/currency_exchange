@@ -63,7 +63,7 @@ class P2pTable extends Migration
 
             'status'      => [
                 'type'           => 'ENUM',
-                'constraint'     => ['open', 'close', 'in_progress'],
+                'constraint'     => ['open', 'close', 'in_progress','requested'],
                 'default'        => 'open',
             ],
 

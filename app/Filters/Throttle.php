@@ -27,7 +27,7 @@ class Throttle implements FilterInterface
         //$ip = $request->getIPAddress();
          $ip = '127.20.121.11';
 
-        if ($throttler->check($ip, 1, SECOND) === false)
+        if ($throttler->check($ip, 60, MINUTE) === false)
         {
             return Services::response()->setStatusCode(429);
         }

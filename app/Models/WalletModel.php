@@ -89,4 +89,9 @@ class WalletModel extends Model
         }
     }
 
+    public function creditWallet($id, $currency_from, $max_amount):bool
+    {
+        return $this->set("$currency_from","$currency_from+$max_amount",false)->where(['user_id' => $id])->update();
+    }
+
 }
